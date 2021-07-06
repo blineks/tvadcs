@@ -1,0 +1,339 @@
+/**
+ * Created by Eguana
+ */
+require(['jquery', 'bxslider', 'jquery/ui'], function($) {
+    //<![CDATA[
+    $(window).load(function() {
+        $('.header-bottom .navigation-megamenu-wrapper').find('nav').attr('aria-label', 'megamenu_normal');
+        $('iframe').removeAttr('frameborder');
+        $('iframe').removeAttr('scrolling');
+        $('iframe').removeAttr('tabindex');
+    })
+    $(document).ready(function() {
+
+        $('head').append('<meta http-equiv="X-UA-Compatible" content="IE=edge" />');
+
+        $(document).on("mousedown touchstart", $.datepicker._checkExternalClick);
+        $('.amlocator_center').find('iframe').each(function(index, e) {
+            $(e).attr('title', 'amlocator title-' + index)
+        });
+        $('#amlocator-map-canvas').find('img').each(function(index, e) {
+            $(e).attr('alt', 'hmart logo ' + index)
+        });
+        $('.product.attribute.description').find('img').each(function(index, e) {
+            $(e).attr('alt', 'product description image ' + index)
+        });
+        $('.gmnoprint').find('span[role="checkbox"]').removeAttr('role');
+
+        /**
+         * Back Top Button
+         */
+        // scroll body to 0px on click
+        $(document).on("click", ".back-top", function() {
+            $('body,html').animate({
+                scrollTop: 0
+            }, 800);
+            return false;
+        });
+        $('#ui-datepicker-div').attr('role', 'navigation');
+        $('#ui-datepicker-div').attr('aria-labelledby', 'datepicker-nav');
+        $('#ui-datepicker-div').find('.ui-datepicker-header').attr('id', 'datepicker-nav');
+
+
+        $('.nav-sections').attr('role', 'navigation');
+        //$('.nav-sections').attr('aria-labelledby', 'top-links-nav');
+        $('.nav-sections > .top-links').attr('aria-label', 'top-links');
+        $('.nav-sections > .top-links').attr('id', 'top-links-nav');
+
+        setTimeout(() => {
+            $('#header-scroll-nav-wrap').find('.site_nav_wrap').attr('aria-labelledby', 'megamenu-static-scroll');
+            // $('#header-scroll-nav-wrap').find('.site_nav_wrap').attr('aria-label', 'megamenu static scroll wrap');
+            $('#header-scroll-nav-wrap').find('.site_nav_wrap').find('nav').attr('id', 'megamenu-static-scroll');
+            $('#header-scroll-nav-wrap').find('.site_nav_wrap').find('nav').attr('aria-label', 'megamenu-static-scroll-label');
+
+            $('.storelocator-content').find('span[role="checkbox"]').removeAttr('role');
+        }, 1000)
+
+        let mobileNavEle = $('.mobile-menu').find('div[role="navigation"]');
+        mobileNavEle.attr('aria-labelledby', 'megamenu_mobile_nav');
+        mobileNavEle.children().attr('id', 'megamenu_mobile_nav');
+        mobileNavEle.children().attr('aria-label', 'mobile-navigation-mobile');
+
+
+
+        var tick = setInterval(() => {
+            if ($('.nav-sections').find('ul.header.links').length > 0) {
+                $('.nav-sections  .nav-sections-items  ul.header.links').attr('role', 'navigation');
+                $('.nav-sections  .nav-sections-items  ul.header.links').attr('aria-label', 'header links');
+                clearInterval(tick);
+            }
+        }, 500)
+
+        // Sticky Header
+        if (!isApplication()) {
+            $('.page-header > .header.content .logo').clone().prependTo('.header-scroll .header.content .scroll-content-wrapper');
+            $('.page-header > .header.content .ammenu-menu-toggle.-hamburger').clone().prependTo('.header-scroll .header.content .scroll-content-wrapper');
+            $('.page-header > .header-bottom .sidebar-megamenu').clone().prependTo('.header-scroll .header.content').find('.navigation-megamenu-wrapper').attr('aria-label', 'staticjs');
+
+            if ($('.page-header > .header.content').offset()) {
+                var navBar = '.header-scroll';
+                var stickyNavTop = $('header').offset().top + 150;
+                var searchForm = $('.page-header > .header.content .block-search');
+                var miniCart = $('[data-block=\'minicart\']');
+                var zipCode = $('.page-header > .header.content .zipcode-open');
+
+                var stickyNav = function() {
+                    var scrollTop = $(window).scrollTop();
+
+                    if (scrollTop > stickyNavTop) {
+                        $('.header-scroll .navigation-megamenu-wrapper').find('nav').attr('aria-label', 'megamenu_sticky');
+                        // $('.header-scroll .navigation-megamenu-wrapper').find('.site_nav_wrap').attr('role', 'stickymegamenu');
+                        $(navBar).addClass('sticky');
+                        $('.header-scroll .header.content .search-customer-table').prepend(searchForm);
+                        $('.header-scroll .header.content .customer-cart').prepend(zipCode);
+                        $('.header-scroll .header.content .customer-cart').append(miniCart);
+                    } else {
+                        $(navBar).removeClass('sticky');
+                        $('.page-header > .header.content .search-customer-table').prepend(searchForm);
+                        $('.page-header > .header.content .customer-cart').prepend(zipCode);
+                        $('.page-header > .header.content .customer-cart').append(miniCart);
+                    }
+                };
+
+                $(window).scroll(function() {
+                    stickyNav();
+
+                    // fade in #back-top
+                    if ($(this).scrollTop() > 100) {
+                        $('.back-top').fadeIn();
+                    } else {
+                        $('.back-top').fadeOut();
+                    }
+                });
+            }
+        }
+
+        /*
+         * Navigation Mobile
+         */
+        $('.btn-submobile').click(function() {
+            $(this).prev().slideToggle(200);
+            $(this).toggleClass('active');
+            $(this).parent().toggleClass('active');
+        });
+
+        $('.nav-toggle').click(function() {
+            var html = $('html');
+
+            if (html.hasClass('nav-open')) {
+                html.removeClass('nav-open');
+            } else {
+                html.addClass('nav-open');
+            }
+        });
+
+        /*
+         * Footer Mobile Title
+         */
+        $('.footer .links-title').click(function() {
+            if (isApplication()) {
+                $(this).next().slideToggle();
+                $(this).toggleClass('active');
+            }
+        });
+
+        $('.review-add-block-title.login').click(function() {
+            $(this).next().toggleClass('active');
+        });
+
+        /*
+         * Menu Click
+         */
+        $('.Account .menu-title').click(function() {
+            $(this).next().children().slideToggle(10);
+            $(this).toggleClass('active');
+        });
+
+        $('.common-left-nav .title').click(function() {
+            if (isApplication()) {
+                $(this).next().slideToggle(10);
+                $(this).toggleClass('active');
+            }
+        });
+
+        /*
+         * Menu Web Focus
+         */
+        $('.megamenu-content-sidebar .btn-megamenu a').keydown(function() {
+            if (event.keyCode == 13) {
+                $('.megamenu-content-sidebar').addClass('focus');
+            }
+        });
+
+        $('.sm-megamenu-hover .sm_megamenu_drop > a').keydown(function() {
+            if (event.keyCode == 13 && $(this).hasClass('sm_megamenu_haschild')) {
+                event.preventDefault();
+                $('.sm-megamenu-hover').children().removeClass('focus');
+                $(this).parent().addClass('focus');
+            }
+        });
+        $('.vertical-type.sm-megamenu-hover').mouseout(function() {
+            $(this).find('.sm_megamenu_drop').removeClass('focus');
+            $('.megamenu-content-sidebar').removeClass('focus');
+        });
+        $('.horizontal-type.sm-megamenu-hover .sm_megamenu_drop').mouseout(function() {
+            $(this).removeClass('focus');
+        });
+
+
+        /*
+         * Filter Options
+         */
+        $('.filter-title > strong').click(function() {
+            $(this).closest('.block.filter').toggleClass('active');
+            $(this).closest('html').toggleClass('filter-active');
+            if ($('.block.filter').hasClass('active')) {
+                $(this).text('');
+            } else {
+                $(this).text('Filter');
+            }
+        });
+
+        $('.filter-options dt').click(function() {
+            $(this).toggleClass('active');
+            $(this).next().toggleClass('active');
+        });
+
+        var itemId = '';
+        var itemQty = '';
+
+        $('input.cart-qty').keyup(function() {
+            QtyvalueCheck($(this));
+        });
+
+        $('.cart-qty-btn').click(function() {
+            QtyvalueCheck($(this).siblings('input.cart-qty'));
+        });
+
+        function QtyvalueCheck(elem) {
+            itemId = elem.data('cart-item');
+            itemQty = elem.data('item-qty');
+            if (itemQty == elem.val()) {
+                $('#update-cart-' + itemId).hide('fade', 300);
+            } else {
+                $('#update-cart-' + itemId).show('fade', 300);
+            }
+        }
+    });
+
+
+
+    /****************************
+     * Mobile Y/N
+     * @returns {boolean}
+     ****************************/
+    function isApplication() {
+        var isMobile = false;
+        if (navigator.userAgent.match(/Android|Mobile|iP(hone|od|ad)|BlackBerry|IEMobile|Kindle|NetFront|Silk-Accelerated|(hpw|web)OS|Fennec|Minimo|Opera M(obi|ini)|Blazer|Dolfin|Dolphin|Skyfire|Zune/)) {
+            if (jQuery(window).width() < 768) {
+                isMobile = true;
+            }
+        }
+        return isMobile;
+    }
+
+    // sticky header for mobile
+    function formSubmit(v) {
+        $("#search").focus().val(v);
+        $('#search_mini_form').submit();
+    }
+    if (isApplication()) {
+        let keyWrap = $('#hot_search_keys');
+        let searchWrap = $('#search_mini_form');
+        let keys = [];
+        let searchKeys = JSON.parse(localStorage.getItem('searchKeys'));
+        let searchClose = $('.search_close');
+        let searchLabel = $('.search > .label')
+        keys = (searchKeys != undefined && searchKeys.length > 0) ? searchKeys : keys;
+        $('.action.search').on('click', function() {
+            let Sval = $.trim($('#search').val())
+            if (jQuery.inArray(Sval, keys) < 0) {
+                keys.push(Sval);
+            }
+            localStorage.setItem('searchKeys', JSON.stringify(keys));
+        });
+        $(document).on('click', '.search .label', function() {
+            $(this).addClass('active');
+            searchWrap.addClass('active');
+            $('#search')[0].focus();
+        })
+
+        $(document).on('click', '.filed_key_close', function() {
+            $('#search').val('');
+        });
+        $('#searchBtn').on('click', function() {
+            let Sval = $.trim($('#search').val())
+            formSubmit(Sval);
+        })
+        if (searchKeys != undefined && searchKeys.length > 0) {
+            keys = searchKeys;
+            searchKeys.map(item => {
+                let keyLabel = $('<label/>');
+                let keyLabelWrap = $('<div/>').attr({
+                    'class': 'key_label'
+                });
+                let keyClose = $('<span class="key_close"> </span>');
+                keyLabel.text(item);
+                keyWrap.append(keyLabel);
+                keyLabelWrap.append(keyLabel)
+                keyLabelWrap.append(keyClose)
+                keyWrap.append(keyLabelWrap);
+            });
+        }
+        $(document).on('click', '.key_close', function() {
+            $(this).parent('.key_label').remove();
+            let lbl = $(this).siblings('label').text();
+            searchKeys = JSON.parse(localStorage.getItem('searchKeys'));
+            searchKeys = jQuery.grep(searchKeys, function(value) {
+                return value != lbl;
+            })
+            localStorage.setItem('searchKeys', JSON.stringify(searchKeys));
+
+        });
+        $(document).on('click', '.key_label', function() {
+            let lbl = $.trim($(this).text());
+            $('#search').val(lbl);
+            formSubmit(lbl);
+        });
+        searchClose.on('click', function() {
+            searchWrap.removeClass('active');
+            searchLabel.removeClass('active')
+        })
+    }
+    var ele = $('.page-header > .header.content');
+    $(window).scroll(function() {
+        var mobileWidth = $(window).width();
+        var scrolltop = $(window).scrollTop();
+        if (mobileWidth < 768) {
+            if (scrolltop > 33) {
+                ele.css({
+                    position: 'fixed',
+                    top: 0,
+                    left: 0,
+                    backgroundColor: '#fff',
+                    right: 0,
+
+                })
+            } else {
+                ele.css({
+                    position: 'relative',
+                    top: 'intial',
+                    left: 'intial',
+                    right: 'intial',
+                    transform: 'none',
+                })
+            }
+        }
+    });
+    //]]>
+});

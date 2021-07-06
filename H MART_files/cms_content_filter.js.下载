@@ -1,0 +1,17 @@
+define([
+    'jquery'
+], function () {
+    (function ($) {
+        if($('.language-css').find('code').length > 0 ){
+            var css = "<style>" + $('.language-css').find('code').text() +"</style>";
+            $('.language-css').remove();
+            $('body').append(css);
+        }
+
+        if($('.language-javascript').find('code').length > 0 ){
+            var js = "<script>" + $('.language-javascript').find('code').text() +"</script>";
+            $('.language-javascript').remove();
+            $('body').append(js);
+        }
+    })(jQuery);
+});

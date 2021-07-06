@@ -1,0 +1,30 @@
+define([
+    'jquery',
+    'jquery/ui'
+    ], function($, ui){
+      'use strict';
+  
+      $.widget('kensium.hmart', {
+  
+          _create: function() {
+              this.initAllPages();
+              
+          },
+  
+          initAllPages: function() {
+            $('u').contents().unwrap();
+            $('i').replaceWith(function() {
+                return $('<em>').append($(this).html())
+              })
+            $('b').replaceWith(function() {
+                return $('<strong>').append($(this).html())
+              })
+             
+          }
+  
+         
+  
+      });
+      $(document).hmart();
+  });
+  

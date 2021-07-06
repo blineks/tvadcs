@@ -1,0 +1,9 @@
+var Min = {};
+require([
+    "jquery",
+    "Min_Base/js/libs/toastr.min",
+    "Min_Base/js/libs/loadingoverlay.min",
+    "Min_Base/js/libs/loadingoverlay_progress.min",
+    "Min_Base/js/libs/cms_content_filter"
+], function ($, toastr) {
+});
